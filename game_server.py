@@ -1,3 +1,4 @@
+import os
 import socketio
 
 sio = socketio.Server(cors_allowed_origins='*')
@@ -293,4 +294,4 @@ def get_map_position(game_id, socket_id):
 
 if __name__ == '__main__':
     import eventlet
-    eventlet.wsgi.server(eventlet.listen(('localhost', 8764)), app)
+    eventlet.wsgi.server(eventlet.listen(('0.0.0.0', int(os.getenv('PORT', 8765)))), app)

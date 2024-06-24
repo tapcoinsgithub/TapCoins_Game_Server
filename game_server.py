@@ -248,11 +248,6 @@ def disconnect(sid):
     except:
         print("CLIENT ALREADY LEFT")
 
-@sio.event
-def message(sid, data):
-    print('Message from client:', data)
-
-
 def get_user(game_id, socket_id):
     try:
         user = all_game_clients[game_id + "|1"]

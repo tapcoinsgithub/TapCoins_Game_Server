@@ -290,5 +290,12 @@ def get_map_position(game_id, socket_id):
 if __name__ == '__main__':
     import eventlet
     print(f"WSGI_HOST: {config('WSGI_HOST')} | PORT: {config('WSGI_PORT', cast=int)}")
-    eventlet.wsgi.server(eventlet.listen((config('WSGI_HOST'), config('WSGI_PORT', cast=int))), app)
+    eventlet.wsgi.server(
+        eventlet.listen(
+            (
+            '0.0.0.0', 
+            8765
+            )
+        ), app
+    )
         

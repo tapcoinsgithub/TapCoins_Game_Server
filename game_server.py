@@ -297,8 +297,8 @@ if __name__ == '__main__':
     eventlet.wsgi.server(
         eventlet.listen(
             (
-            WSGI_HOST, 
-            WSGI_PORT
+            '0.0.0.0', 
+            8765
             )
         ), app
     )

@@ -3,8 +3,7 @@ import socketio
 from decouple import config
 import json
 
-sio = socketio.Server(cors_allowed_origins=json.loads(config('ALLOWED_HOSTS')))
-print("OUT HERE")
+sio = socketio.Server(cors_allowed_origins=config('ALLOWED_HOSTS'))
 app = socketio.WSGIApp(sio)
 sid_to_game_clients = {}
 sid_to_game_ids = {}
@@ -13,7 +12,6 @@ all_game_clients = {}
 
 if __name__ == '__main__':
     import eventlet
-    print("IN HERE")
     eventlet.wsgi.server(eventlet.listen((config('WSGI_HOST'), int(os.getenv('PORT', 8765)))), app)
 
 class GameClient():

@@ -1,3 +1,4 @@
+import os
 import socketio
 from decouple import config
 
@@ -7,6 +8,7 @@ sid_to_game_clients = {}
 sid_to_game_ids = {}
 all_game_rooms = {}
 all_game_clients = {}
+DEBUG = True
 
 class GameClient():
     def __init__(self, _username, _socketId, _ready, _streakDash):
@@ -289,17 +291,8 @@ def get_map_position(game_id, socket_id):
         
 if __name__ == '__main__':
     import eventlet
-    print(f"WSGI_HOST: {config('WSGI_HOST')} | PORT: {config('WSGI_PORT', cast=int)}")
-    if config('WSGI_HOST') : WSGI_HOST = config('WSGI_HOST')
-    else : WSGI_HOST = '0.0.0.0'
-    if config('WSGI_PORT') : WSGI_PORT = config('WSGI_PORT', cast=int)
-    else : WSGI_PORT = 8765
-    eventlet.wsgi.server(
-        eventlet.listen(
-            (
-            '0.0.0.0', 
-            8765
-            )
-        ), app
-    )
+    if DEBUG:
+        eventlet.wsgi.server(eventlet.listen(('localhost', 8763)), app)
+    else:
+        eventlet.wsgi.server(eventlet.listen(('0.0.0.0', int(os.getenv('PORT', 8765)))), app)
         

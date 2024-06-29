@@ -1,7 +1,8 @@
 import os
 import socketio
+from decouple import config
 
-sio = socketio.Server(cors_allowed_origins='*')
+sio = socketio.Server(cors_allowed_origins=config('ALLOWED_HOSTS'))
 app = socketio.WSGIApp(sio)
 sid_to_game_clients = {}
 sid_to_game_ids = {}
@@ -287,10 +288,11 @@ def get_map_position(game_id, socket_id):
         else:
             print("USER NOT IN CLIENTS")
             return None
-
+        
 if __name__ == '__main__':
     import eventlet
     if DEBUG:
-        eventlet.wsgi.server(eventlet.listen(('localhost', 8764)), app)
+        eventlet.wsgi.server(eventlet.listen(('localhost', 8763)), app)
     else:
         eventlet.wsgi.server(eventlet.listen(('0.0.0.0', int(os.getenv('PORT', 8765)))), app)
+        

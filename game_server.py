@@ -1,13 +1,14 @@
 import os
 import socketio
+from decouple import config
+import json
 
-sio = socketio.Server(cors_allowed_origins='*')
+sio = socketio.Server(cors_allowed_origins=json.loads(config('ALLOWED_HOSTS')))
 app = socketio.WSGIApp(sio)
 sid_to_game_clients = {}
 sid_to_game_ids = {}
 all_game_rooms = {}
 all_game_clients = {}
-DEBUG = False
 
 class GameClient():
     def __init__(self, _username, _socketId, _ready, _streakDash):
@@ -290,7 +291,5 @@ def get_map_position(game_id, socket_id):
 
 if __name__ == '__main__':
     import eventlet
-    if DEBUG:
-        eventlet.wsgi.server(eventlet.listen(('localhost', 8764)), app)
-    else:
-        eventlet.wsgi.server(eventlet.listen(('0.0.0.0', int(os.getenv('PORT', 8765)))), app)
+    eventlet.wsgi.server(eventlet.listen((config('WSGI_HOST'), int(os.getenv('PORT', 8765)))), app)
+        

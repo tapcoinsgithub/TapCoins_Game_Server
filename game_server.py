@@ -4,11 +4,17 @@ from decouple import config
 import json
 
 sio = socketio.Server(cors_allowed_origins=json.loads(config('ALLOWED_HOSTS')))
+print("OUT HERE")
 app = socketio.WSGIApp(sio)
 sid_to_game_clients = {}
 sid_to_game_ids = {}
 all_game_rooms = {}
 all_game_clients = {}
+
+if __name__ == '__main__':
+    import eventlet
+    print("IN HERE")
+    eventlet.wsgi.server(eventlet.listen((config('WSGI_HOST'), int(os.getenv('PORT', 8765)))), app)
 
 class GameClient():
     def __init__(self, _username, _socketId, _ready, _streakDash):
@@ -288,8 +294,4 @@ def get_map_position(game_id, socket_id):
         else:
             print("USER NOT IN CLIENTS")
             return None
-
-if __name__ == '__main__':
-    import eventlet
-    eventlet.wsgi.server(eventlet.listen((config('WSGI_HOST'), int(os.getenv('PORT', 8765)))), app)
         
